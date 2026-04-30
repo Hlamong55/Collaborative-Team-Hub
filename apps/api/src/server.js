@@ -10,13 +10,26 @@ app.use(cookieParser());
 
 app.use(
   cors({
-    origin: "http://localhost:3000",
-    credentials: true
+    origin: process.env.CLIENT_URL,
+    credentials: true,
   })
 );
 
+const authRoutes = require("./routes/auth.routes");
+app.use("/api/auth", authRoutes);
+
+// test route
 app.get("/", (req, res) => {
   res.send("API running...");
+});
+
+const auth = require("./middleware/auth.middleware");
+
+app.get("/api/me", auth, (req, res) => {
+  res.json({
+    id: req.user.id,
+    email: req.user.email
+  });
 });
 
 const PORT = process.env.PORT || 5000;
