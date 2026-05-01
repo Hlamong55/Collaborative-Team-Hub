@@ -5,6 +5,7 @@ require("dotenv").config();
 
 const app = express();
 
+// Middleware 
 app.use(express.json());
 app.use(cookieParser());
 
@@ -15,23 +16,39 @@ app.use(
   })
 );
 
+
+// Routes
 const authRoutes = require("./routes/auth.routes");
+const workspaceRoutes = require("./routes/workspace.routes");
+
+
+// Auth
 app.use("/api/auth", authRoutes);
 
-// test route
+// Workspace
+app.use("/api/workspaces", workspaceRoutes);
+
+
+
+// Test Route
 app.get("/", (req, res) => {
   res.send("API running...");
 });
 
+// Protected Test
 const auth = require("./middleware/auth.middleware");
 
 app.get("/api/me", auth, (req, res) => {
   res.json({
     id: req.user.id,
-    email: req.user.email
+    email: req.user.email,
   });
 });
 
+
+
+
+// Server
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {
