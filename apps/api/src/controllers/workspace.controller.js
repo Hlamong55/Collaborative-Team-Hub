@@ -100,3 +100,43 @@ exports.getMembers = async (req, res) => {
 
   res.json(members);
 };
+
+//  Change Role
+exports.changeRole = async (req, res) => {
+  const { workspaceId, memberId } = req.params;
+  const { role } = req.body;
+
+  const me = await prisma.workspaceMember.findFirst({
+    where: { workspaceId, userId: req.user.id },
+  });
+
+  if (!me || me.role !== "ADMIN") {
+    return res.status(403).json({ message: "Only admin can change role" });
+  }
+
+  const updated = await prisma.workspaceMember.update({
+    where: { id: memberId },
+    data: { role },
+  });
+
+  res.json(updated);
+};
+
+//  Remove Member
+exports.removeMember = async (req, res) => {
+  const { workspaceId, memberId } = req.params;
+
+  const me = await prisma.workspaceMember.findFirst({
+    where: { workspaceId, userId: req.user.id },
+  });
+
+  if (!me || me.role !== "ADMIN") {
+    return res.status(403).json({ message: "Only admin can remove members" });
+  }
+
+  await prisma.workspaceMember.delete({
+    where: { id: memberId },
+  });
+
+  res.json({ message: "Member removed" });
+};

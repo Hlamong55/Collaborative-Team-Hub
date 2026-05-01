@@ -6,6 +6,8 @@ const {
   getMyWorkspaces,
   addMember,
   getMembers,
+  changeRole,
+  removeMember
 } = require("../controllers/workspace.controller");
 
 // Create workspace
@@ -19,5 +21,11 @@ router.post("/:workspaceId/members", auth, addMember);
 
 // Get members
 router.get("/:workspaceId/members", auth, getMembers);
+
+// Change role
+router.patch("/:workspaceId/members/:memberId", auth, changeRole);
+
+// Remove member
+router.delete("/:workspaceId/members/:memberId", auth, removeMember);
 
 module.exports = router;
