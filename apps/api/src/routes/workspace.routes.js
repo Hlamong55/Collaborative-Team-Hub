@@ -7,7 +7,8 @@ const {
   addMember,
   getMembers,
   changeRole,
-  removeMember
+  removeMember,
+  getWorkspaceById
 } = require("../controllers/workspace.controller");
 
 // Create workspace
@@ -15,6 +16,9 @@ router.post("/", auth, createWorkspace);
 
 // Get my workspaces
 router.get("/", auth, getMyWorkspaces);
+
+//  GET SINGLE WORKSPACE (ADD THIS)
+router.get("/single/:id", auth, getWorkspaceById);
 
 // Add member
 router.post("/:workspaceId/members", auth, addMember);

@@ -35,6 +35,21 @@ exports.getMyWorkspaces = async (req, res) => {
   res.json(workspaces);
 };
 
+//  Get Workspace By Id
+exports.getWorkspaceById = async (req, res) => {
+  const { id } = req.params;
+
+  const workspace = await prisma.workspace.findUnique({
+    where: { id },
+  });
+
+  if (!workspace) {
+    return res.status(404).json({ message: "Workspace not found" });
+  }
+
+  res.json(workspace);
+};
+
 // Add Member
 exports.addMember = async (req, res) => {
   try {
