@@ -1,23 +1,84 @@
+"use client";
+
+import { useEffect, useState } from "react";
+import { getWorkspaces, createWorkspace } from "../../../lib/api";
+import { useRouter } from "next/navigation";
+import { useWorkspaceStore } from "../../../lib/store";
+import WorkspaceCard from "../../../components/WorkspaceCard";
+import Modal from "../../../components/Modal";
+
 export default function DashboardPage() {
+  const [workspaces, setWorkspaces] = useState([]);
+  const [name, setName] = useState("");
+  const [open, setOpen] = useState(false);
+
+  const router = useRouter();
+  const setWorkspace = useWorkspaceStore((s) => s.setWorkspace);
+
+  const load = async () => {
+    const data = await getWorkspaces();
+    setWorkspaces(data);
+  };
+
+  useEffect(() => {
+    load();
+  }, []);
+
+  const handleCreate = async () => {
+    if (!name.trim()) return;
+    await createWorkspace({ name });
+    setName("");
+    setOpen(false);
+    load();
+  };
+
   return (
-    <div className="text-white p-6">
-      <h1 className="text-2xl font-bold mb-4">
-        Dashboard 🚀
-      </h1>
+    <div className="text-white">
 
-      <div className="grid grid-cols-3 gap-6">
-        <div className="bg-white/5 p-5 rounded-xl border border-white/10">
-          Total Goals: 5
-        </div>
+      <div className="flex justify-between mb-6">
+        <h1 className="text-2xl font-bold">Workspaces</h1>
 
-        <div className="bg-white/5 p-5 rounded-xl border border-white/10">
-          Tasks Completed: 12
-        </div>
-
-        <div className="bg-white/5 p-5 rounded-xl border border-white/10">
-          Overdue: 2
-        </div>
+        <button
+          onClick={() => setOpen(true)}
+          className="bg-gradient-to-r from-purple-500 to-pink-500 px-4 py-2 rounded-lg"
+        >
+          + New
+        </button>
       </div>
+
+      <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+        {workspaces.map((ws) => (
+          <WorkspaceCard
+            key={ws.id}
+            ws={ws}
+            onClick={() => {
+              setWorkspace(ws);
+              router.push(`/workspace/${ws.id}`);
+            }}
+          />
+        ))}
+      </div>
+
+      {open && (
+        <Modal onClose={() => setOpen(false)}>
+          <h2 className="text-lg font-bold mb-4">
+            Create Workspace
+          </h2>
+
+          <input
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            className="w-full mb-4 px-3 py-2 rounded bg-white/10"
+          />
+
+          <button
+            onClick={handleCreate}
+            className="bg-purple-600 px-4 py-2 rounded"
+          >
+            Create
+          </button>
+        </Modal>
+      )}
     </div>
   );
 }

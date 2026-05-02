@@ -1,11 +1,13 @@
 import { create } from "zustand";
 
+/* Auth Store */
 export const useAuthStore = create((set) => ({
   user: null,
-  isAuth: false,
-  loading: true,
+  setUser: (user) => set({ user }),
+}));
 
-  setUser: (user) => set({ user, isAuth: true, loading: false }),
-  logout: () => set({ user: null, isAuth: false, loading: false }),
-  stopLoading: () => set({ loading: false }),
+/* Workspace Store */
+export const useWorkspaceStore = create((set) => ({
+  currentWorkspace: null,
+  setWorkspace: (ws) => set({ currentWorkspace: ws }),
 }));

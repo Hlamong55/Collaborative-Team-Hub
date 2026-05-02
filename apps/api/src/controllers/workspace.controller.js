@@ -21,7 +21,7 @@ exports.createWorkspace = async (req, res) => {
 
 // Get My Workspaces
 exports.getMyWorkspaces = async (req, res) => {
-  const workspaces = await prisma.workspaceMember.findMany({
+  const members = await prisma.workspaceMember.findMany({
     where: {
       userId: req.user.id,
     },
@@ -29,6 +29,8 @@ exports.getMyWorkspaces = async (req, res) => {
       workspace: true,
     },
   });
+
+  const workspaces = members.map((m) => m.workspace);
 
   res.json(workspaces);
 };
