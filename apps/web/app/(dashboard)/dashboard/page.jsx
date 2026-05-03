@@ -35,12 +35,12 @@ export default function DashboardPage() {
   return (
     <div className="text-white">
 
-      <div className="flex justify-between mb-6">
+      <div className="flex justify-between mb-8">
         <h1 className="text-2xl font-bold">Workspaces</h1>
 
         <button
           onClick={() => setOpen(true)}
-          className="bg-gradient-to-r from-purple-500 to-pink-500 px-4 py-2 rounded-lg"
+          className="bg-gradient-to-r from-purple-600 to-pink-600 px-4 py-2 rounded-lg font-medium hover:scale-105 transition"
         >
           + New
         </button>

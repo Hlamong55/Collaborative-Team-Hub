@@ -6,9 +6,9 @@ export default function Modal({ children, onClose }) {
 
         <button
           onClick={onClose}
-          className="absolute top-3 right-4 text-gray-400"
+          className="absolute top-42 right-90 text-gray-400"
         >
-          ✕
+          Close
         </button>
       </div>
     </div>

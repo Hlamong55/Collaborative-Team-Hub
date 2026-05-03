@@ -28,7 +28,7 @@ app.use("/api/auth", authRoutes);
 
 app.use("/api/workspaces", workspaceRoutes);
 
-app.use("/api", goalRoutes);
+app.use("/api/workspaces", goalRoutes);
 
 
 
