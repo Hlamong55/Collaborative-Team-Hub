@@ -8,103 +8,142 @@ import {
   createGoal,
   getTasks,
   createTask,
+  updateTaskStatus,
 } from "../../../../lib/api";
 
 export default function WorkspacePage() {
   const { id } = useParams();
 
   const [workspace, setWorkspace] = useState(null);
-
   const [goals, setGoals] = useState([]);
   const [tasks, setTasks] = useState([]);
 
   const [goalTitle, setGoalTitle] = useState("");
+  const [dueDate, setDueDate] = useState("");
+
   const [taskTitle, setTaskTitle] = useState("");
+  const [priority, setPriority] = useState("MEDIUM");
+  const [goalId, setGoalId] = useState("");
+
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     if (id) load();
   }, [id]);
 
   const load = async () => {
-    const ws = await getWorkspaceById(id);
-    const gs = await getGoals(id);
-    const ts = await getTasks(id);
+    try {
+      const ws = await getWorkspaceById(id);
+      const gs = await getGoals(id);
+      const ts = await getTasks(id);
 
-    setWorkspace(ws);
-    setGoals(gs);
-    setTasks(ts);
+      setWorkspace(ws);
+      setGoals(gs);
+      setTasks(ts);
+    } catch (err) {
+      console.log(err);
+    } finally {
+      setLoading(false);
+    }
   };
 
   // CREATE GOAL
   const handleCreateGoal = async () => {
     if (!goalTitle) return;
 
-    await createGoal(id, {
-      title: goalTitle,
-    });
+    try {
+      await createGoal(id, {
+        title: goalTitle,
+        dueDate,
+      });
 
-    setGoalTitle("");
-    load();
+      setGoalTitle("");
+      setDueDate("");
+      load();
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   // CREATE TASK
   const handleCreateTask = async () => {
     if (!taskTitle) return;
 
-    await createTask(id, {
-      title: taskTitle,
-    });
+    try {
+      await createTask(id, {
+        title: taskTitle,
+        priority,
+        goalId,
+      });
 
-    setTaskTitle("");
-    load();
+      setTaskTitle("");
+      setGoalId("");
+      load();
+    } catch (err) {
+      console.log(err);
+    }
   };
+
+  if (loading) {
+    return <p className="text-gray-400">Loading...</p>;
+  }
 
   return (
     <div className="text-white p-6">
+
       {/* HEADER */}
-      <h1 className="text-2xl font-bold mb-6">{workspace?.name}</h1>
+      <h1 className="text-2xl font-bold mb-6">
+        {workspace?.name}
+      </h1>
 
       {/* GRID */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+
         {/* GOALS */}
         <div className="bg-white/5 p-6 rounded-xl border border-white/10">
           <h2 className="font-semibold mb-4">Goals</h2>
 
           {/* CREATE */}
-          <div className="flex gap-2 mb-4">
+          <div className="flex flex-col gap-2 mb-4">
             <input
               value={goalTitle}
               onChange={(e) => setGoalTitle(e.target.value)}
               placeholder="New goal..."
-              className="px-3 py-2 bg-white/10 rounded w-full"
+              className="px-3 py-2 bg-white/10 rounded"
             />
+
+            <input
+              type="date"
+              value={dueDate}
+              onChange={(e) => setDueDate(e.target.value)}
+              className="px-3 py-2 bg-white/10 rounded"
+            />
+
             <button
               onClick={handleCreateGoal}
-              className="bg-purple-600 hover:scale-105 transition hover:bg-purple-700 font-semibold  px-4 rounded"
+              className="bg-purple-600 hover:bg-purple-700 py-2 rounded font-semibold"
             >
-              +Add
+              +Add Goal
             </button>
           </div>
 
-          {/* GOALS LIST */}
+          {/* LIST */}
           <div className="space-y-3">
             {goals.map((g) => (
               <div
                 key={g.id}
-                className="bg-white/5 p-4 rounded-xl border border-white/10 hover:border-purple-500 transition cursor-pointer"
+                className="bg-white/5 p-4 rounded-xl border border-white/10"
               >
+                <div className="flex justify-between">
+                  <p className="font-medium">{g.title}</p>
 
-                {/* STATUS BADGE */}
-                <div className="flex  justify-between gap-2 mt-2">
-                    <p className="font-medium text-white">{g.title}</p>
                   <span className="text-xs px-2 py-1 rounded bg-yellow-500/20 text-yellow-400">
                     {g.status}
                   </span>
                 </div>
 
-                {/* DUE DATE */}
                 {g.dueDate && (
-                  <p className="text-xs text-gray-400 mt-2.5">
+                  <p className="text-xs text-gray-400 mt-2">
                     Due: {new Date(g.dueDate).toLocaleDateString()}
                   </p>
                 )}
@@ -124,42 +163,86 @@ export default function WorkspacePage() {
           <h2 className="font-semibold mb-4">Tasks</h2>
 
           {/* CREATE */}
-          <div className="flex gap-2 mb-4">
+          <div className="flex flex-col gap-2 mb-4">
+
             <input
               value={taskTitle}
               onChange={(e) => setTaskTitle(e.target.value)}
               placeholder="New task..."
-              className="px-3 py-2 bg-white/10 rounded w-full"
+              className="px-3 py-2 bg-white/10 rounded"
             />
+
+            {/* PRIORITY */}
+            <select
+              value={priority}
+              onChange={(e) => setPriority(e.target.value)}
+              className="px-3 py-2 bg-white/10 rounded"
+            >
+              <option value="LOW">Low</option>
+              <option value="MEDIUM">Medium</option>
+              <option value="HIGH">High</option>
+            </select>
+
+            {/* GOAL LINK */}
+            <select
+              value={goalId}
+              onChange={(e) => setGoalId(e.target.value)}
+              className="px-3 py-2 bg-white/10 rounded"
+            >
+              <option value="">No Goal</option>
+              {goals.map((g) => (
+                <option key={g.id} value={g.id}>
+                  {g.title}
+                </option>
+              ))}
+            </select>
+
             <button
               onClick={handleCreateTask}
-              className="bg-purple-600 hover:scale-105 transition hover:bg-purple-700 font-semibold px-4 rounded"
+              className="bg-purple-600 hover:bg-purple-700 py-2 rounded font-semibold"
             >
-              +Add
+              +Add Task
             </button>
           </div>
 
-          {/* TASKS LIST */}
+          {/* LIST */}
           <div className="space-y-3">
             {tasks.map((t) => (
               <div
                 key={t.id}
-                className="bg-white/5 p-4 rounded-xl border border-white/10 hover:border-pink-500 transition cursor-pointer"
+                onClick={async () => {
+                  const newStatus =
+                    t.status === "TODO" ? "DONE" : "TODO";
+                  await updateTaskStatus(id, t.id, newStatus);
+                  load();
+                }}
+                className="bg-white/5 p-4 rounded-xl border border-white/10 cursor-pointer"
               >
-                <p className="font-medium text-white">{t.title}</p>
+                <p
+                  className={`font-medium ${
+                    t.status === "DONE"
+                      ? "line-through text-gray-500"
+                      : ""
+                  }`}
+                >
+                  {t.title}
+                </p>
 
-                {/* BADGES */}
-                <div className="flex items-center gap-3 mt-3">
-                  {/* STATUS */}
+                <div className="flex gap-2 mt-2">
                   <span className="text-xs px-2 py-1 rounded bg-blue-500/20 text-blue-400">
                     {t.status}
                   </span>
 
-                  {/* PRIORITY */}
                   <span className="text-xs px-2 py-1 rounded bg-pink-500/20 text-pink-400">
                     {t.priority}
                   </span>
                 </div>
+
+                {t.goal && (
+                  <p className="text-xs text-purple-400 mt-1">
+                    Goal: {t.goal.title}
+                  </p>
+                )}
               </div>
             ))}
 
@@ -170,6 +253,7 @@ export default function WorkspacePage() {
             )}
           </div>
         </div>
+
       </div>
     </div>
   );

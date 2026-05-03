@@ -37,3 +37,11 @@ export const createTask = async (workspaceId, data) => {
   const res = await api.post(`/workspaces/${workspaceId}/tasks`, data);
   return res.data;
 };
+
+export const updateTaskStatus = async (workspaceId, taskId, status) => {
+  const res = await api.patch(
+    `/workspaces/${workspaceId}/tasks/${taskId}`,
+    { status }
+  );
+  return res.data;
+};

@@ -2,11 +2,13 @@ const prisma = require("../utils/prisma");
 
 // Create Workspace
 exports.createWorkspace = async (req, res) => {
-  const { name } = req.body;
+  const { name, description, color } = req.body;
 
   const workspace = await prisma.workspace.create({
     data: {
       name,
+      description,
+      color: color || "#8b5cf6",
       members: {
         create: {
           userId: req.user.id,

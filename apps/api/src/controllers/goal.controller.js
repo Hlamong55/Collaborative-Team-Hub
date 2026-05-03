@@ -35,7 +35,7 @@ exports.getGoals = async (req, res) => {
 // Create Task 
 exports.createTask = async (req, res) => {
   const { workspaceId } = req.params;
-  const { title, assigneeId, priority } = req.body;
+  const { title, assigneeId, priority, goalId } = req.body;
 
   const task = await prisma.actionItem.create({
     data: {
@@ -44,6 +44,7 @@ exports.createTask = async (req, res) => {
       priority: priority || "MEDIUM",
       assigneeId,
       workspaceId,
+      goalId: goalId || null, // 🔥 link
     },
   });
 
@@ -57,9 +58,25 @@ exports.getTasks = async (req, res) => {
   const tasks = await prisma.actionItem.findMany({
     where: { workspaceId },
     include: {
-      assignee: { select: { id: true, name: true, email: true } },
+      assignee: {
+        select: { id: true, name: true },
+      },
+      goal: true, // 🔥 include goal
     },
   });
 
   res.json(tasks);
+};
+
+// Update Task
+exports.updateTaskStatus = async (req, res) => {
+  const { taskId } = req.params;
+  const { status } = req.body;
+
+  const updated = await prisma.actionItem.update({
+    where: { id: taskId },
+    data: { status },
+  });
+
+  res.json(updated);
 };

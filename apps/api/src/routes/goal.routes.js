@@ -6,6 +6,7 @@ const {
   getGoals,
   createTask,
   getTasks,
+  updateTaskStatus
 } = require("../controllers/goal.controller");
 
 // Goals
@@ -15,5 +16,6 @@ router.get("/:workspaceId/goals", auth, getGoals);
 // Tasks
 router.post("/:workspaceId/tasks", auth, createTask);
 router.get("/:workspaceId/tasks", auth, getTasks);
+router.patch("/:workspaceId/tasks/:taskId", auth, updateTaskStatus);
 
 module.exports = router;
