@@ -58,7 +58,7 @@ enum Role {
 model Goal {
   id          String   @id @default(uuid())
   title       String
-  status      String
+  status      String   @default("PENDING")
   dueDate     DateTime?
   ownerId     String
   workspaceId String
@@ -73,12 +73,12 @@ model Goal {
 }
 
 model Milestone {
-  id        String   @id @default(uuid())
-  title     String
-  progress  Int
-  goalId    String
-
-  goal      Goal @relation(fields: [goalId], references: [id])
+  id       String   @id @default(uuid())
+  title    String
+  status   String   // TODO / DONE
+  goalId   String
+  goal     Goal     @relation(fields: [goalId], references: [id])
+  createdAt DateTime @default(now())
 }
 
 model Announcement {
