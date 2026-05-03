@@ -5,7 +5,7 @@ require("dotenv").config();
 
 const app = express();
 
-// Middleware 
+// Middleware
 app.use(express.json());
 app.use(cookieParser());
 
@@ -16,30 +16,24 @@ app.use(
   })
 );
 
-
 // Routes
 const authRoutes = require("./routes/auth.routes");
 const workspaceRoutes = require("./routes/workspace.routes");
 const goalRoutes = require("./routes/goal.routes");
 
-
-
 app.use("/api/auth", authRoutes);
-
 app.use("/api/workspaces", workspaceRoutes);
-
-app.use("/api/workspaces", goalRoutes);
-
+app.use("/api/goals", goalRoutes);
 
 
-
-
-// Test Route
+// Test
 app.get("/", (req, res) => {
   res.send("API running...");
 });
 
-// Protected Test
+
+
+// Protected test
 const auth = require("./middleware/auth.middleware");
 
 app.get("/api/me", auth, (req, res) => {
@@ -48,7 +42,6 @@ app.get("/api/me", auth, (req, res) => {
     email: req.user.email,
   });
 });
-
 
 
 

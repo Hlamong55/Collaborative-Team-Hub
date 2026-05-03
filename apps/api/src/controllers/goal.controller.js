@@ -1,5 +1,7 @@
 const prisma = require("../utils/prisma");
 
+/* ================= GOALS ================= */
+
 // Create Goal
 exports.createGoal = async (req, res) => {
   const { workspaceId } = req.params;
@@ -18,21 +20,26 @@ exports.createGoal = async (req, res) => {
   res.json(goal);
 };
 
-// Get Goals
+// Get Goals 
 exports.getGoals = async (req, res) => {
   const { workspaceId } = req.params;
 
   const goals = await prisma.goal.findMany({
     where: { workspaceId },
     include: {
-      owner: { select: { id: true, name: true, email: true } },
+      owner: {
+        select: { id: true, name: true, email: true },
+      },
+      milestones: true, 
     },
   });
 
   res.json(goals);
 };
 
-// Create Task 
+/* ================= TASKS ================= */
+
+// Create Task
 exports.createTask = async (req, res) => {
   const { workspaceId } = req.params;
   const { title, assigneeId, priority, goalId } = req.body;
@@ -44,7 +51,7 @@ exports.createTask = async (req, res) => {
       priority: priority || "MEDIUM",
       assigneeId,
       workspaceId,
-      goalId: goalId || null, // 🔥 link
+      goalId: goalId || null,
     },
   });
 
@@ -61,20 +68,51 @@ exports.getTasks = async (req, res) => {
       assignee: {
         select: { id: true, name: true },
       },
-      goal: true, // 🔥 include goal
+      goal: true,
     },
   });
 
   res.json(tasks);
 };
 
-// Update Task
+// Update Task Status
 exports.updateTaskStatus = async (req, res) => {
   const { taskId } = req.params;
   const { status } = req.body;
 
   const updated = await prisma.actionItem.update({
     where: { id: taskId },
+    data: { status },
+  });
+
+  res.json(updated);
+};
+
+/* ================= MILESTONES ================= */
+
+// Create Milestone
+exports.createMilestone = async (req, res) => {
+  const { goalId } = req.params;
+  const { title } = req.body;
+
+  const milestone = await prisma.milestone.create({
+    data: {
+      title,
+      status: "TODO",
+      goalId,
+    },
+  });
+
+  res.json(milestone);
+};
+
+// Update Milestone
+exports.updateMilestone = async (req, res) => {
+  const { milestoneId } = req.params;
+  const { status } = req.body;
+
+  const updated = await prisma.milestone.update({
+    where: { id: milestoneId },
     data: { status },
   });
 

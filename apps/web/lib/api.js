@@ -1,6 +1,6 @@
 import api from "./axios";
 
-// workspace
+/* ================= WORKSPACE ================= */
 export const getWorkspaces = async () => {
   const res = await api.get("/workspaces");
   return res.data;
@@ -16,31 +16,45 @@ export const getWorkspaceById = async (id) => {
   return res.data;
 };
 
-// GOALS
+/* ================= GOALS ================= */
 export const getGoals = async (workspaceId) => {
-  const res = await api.get(`/workspaces/${workspaceId}/goals`);
+  const res = await api.get(`/goals/${workspaceId}/goals`);
   return res.data;
 };
 
 export const createGoal = async (workspaceId, data) => {
-  const res = await api.post(`/workspaces/${workspaceId}/goals`, data);
+  const res = await api.post(`/goals/${workspaceId}/goals`, data);
   return res.data;
 };
 
-// TASKS
+/* ================= TASKS ================= */
 export const getTasks = async (workspaceId) => {
-  const res = await api.get(`/workspaces/${workspaceId}/tasks`);
+  const res = await api.get(`/goals/${workspaceId}/tasks`);
   return res.data;
 };
 
 export const createTask = async (workspaceId, data) => {
-  const res = await api.post(`/workspaces/${workspaceId}/tasks`, data);
+  const res = await api.post(`/goals/${workspaceId}/tasks`, data);
   return res.data;
 };
 
 export const updateTaskStatus = async (workspaceId, taskId, status) => {
   const res = await api.patch(
-    `/workspaces/${workspaceId}/tasks/${taskId}`,
+    `/goals/${workspaceId}/tasks/${taskId}`,
+    { status }
+  );
+  return res.data;
+};
+
+/* ================= MILESTONES ================= */
+export const createMilestone = async (goalId, data) => {
+  const res = await api.post(`/goals/milestones/${goalId}`, data);
+  return res.data;
+};
+
+export const updateMilestone = async (milestoneId, status) => {
+  const res = await api.patch(
+    `/goals/milestones/${milestoneId}`,
     { status }
   );
   return res.data;
