@@ -37,7 +37,7 @@ export default function GoalCard({ goal, onUpdate }) {
   };
 
   return (
-    <div className="bg-white/5 p-4 rounded-xl border border-white/10 space-y-4">
+    <div className="bg-white/5 p-4 rounded-xl border border-white/10 space-y-5">
       {/* TITLE */}
       <div className="flex justify-between items-center">
         <p className="font-medium">{goal.title}</p>
@@ -67,7 +67,7 @@ export default function GoalCard({ goal, onUpdate }) {
           value={title}
           onChange={(e) => setTitle(e.target.value)}
           placeholder="Add milestone..."
-          className="flex-1 px-2 py-1 bg-white/10 rounded text-sm outline-none"
+          className="flex-1 px-2 py-2 bg-white/10 rounded text-sm outline-none"
         />
         <button
           onClick={handleAdd}
@@ -108,7 +108,7 @@ export default function GoalCard({ goal, onUpdate }) {
         ))}
 
         {milestones.length === 0 && (
-          <p className="text-gray-500 text-xs italic">No milestones yet</p>
+          <p className="text-gray-400 text-xs italic">No milestones yet</p>
         )}
       </div>
     </div>
