@@ -13,6 +13,7 @@ import {
 
 import { useWorkspaceStore } from "../../../../lib/store";
 import MemberList from "./members/MemberList";
+import GoalCard from "./components/GoalCard";
 
 export default function WorkspacePage() {
   const { id } = useParams();
@@ -31,12 +32,16 @@ export default function WorkspacePage() {
 
   const [goalTitle, setGoalTitle] = useState("");
   const [taskTitle, setTaskTitle] = useState("");
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     if (id) load();
   }, [id]);
 
   const load = async () => {
+    try {
+      setLoading(true);
+
     const ws = await getWorkspaceById(id);
     const gs = await getGoals(id);
     const ts = await getTasks(id);
@@ -44,7 +49,12 @@ export default function WorkspacePage() {
     setWorkspace(ws);
     setGoals(gs);
     setTasks(ts);
-  };
+
+  } catch (err) {
+    console.log(err);
+  } finally {
+    setLoading(false);
+  }};
 
   /* ================= CREATE ================= */
   const handleCreateGoal = async () => {
@@ -64,9 +74,18 @@ export default function WorkspacePage() {
   };
 
   /* ================= UI ================= */
+  if (loading) {
+  return (
+    <div className="text-white p-6">
+      <p className="text-xl font-medium text-gray-400 animate-pulse">
+        Loading workspace...
+      </p>
+    </div>
+  );
+  };
+
   return (
     <div className="text-white p-6 space-y-6">
-
       {/* HEADER */}
       <div className="flex justify-between items-center">
         <div>
@@ -79,10 +98,8 @@ export default function WorkspacePage() {
 
       {/* MAIN GRID */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-
         {/* LEFT SIDE (GOALS + TASKS) */}
         <div className="lg:col-span-2 space-y-6">
-
           {/* GOALS */}
           <div className="bg-white/5 p-6 rounded-2xl border border-white/10">
             <h2 className="font-semibold mb-4 text-lg">Goals</h2>
@@ -104,31 +121,23 @@ export default function WorkspacePage() {
             </div>
 
             {/* LIST */}
-            <div className="space-y-3">
+            <div className="space-y-4">
               {goals.map((g) => (
-                <div
+                <GoalCard
                   key={g.id}
-                  className="bg-white/5 p-4 rounded-xl border border-white/10 hover:border-purple-500 transition"
-                >
-                  <div className="flex justify-between">
-                    <p className="font-medium">{g.title}</p>
-                    <span className="text-xs px-2 py-1 rounded bg-yellow-500/20 text-yellow-400">
-                      {g.status}
-                    </span>
-                  </div>
-
-                  {g.dueDate && (
-                    <p className="text-xs text-gray-400 mt-2">
-                      Due: {new Date(g.dueDate).toLocaleDateString()}
-                    </p>
-                  )}
-                </div>
+                  goal={g}
+                  onUpdate={(goalId, updated) => {
+                    setGoals(
+                      goals.map((x) =>
+                        x.id === goalId ? { ...x, ...updated } : x,
+                      ),
+                    );
+                  }}
+                />
               ))}
 
               {goals.length === 0 && (
-                <p className="text-gray-500 text-sm italic">
-                  No goals yet 🚀
-                </p>
+                <p className="text-gray-500 text-sm italic">No goals yet 🚀</p>
               )}
             </div>
           </div>
@@ -159,8 +168,7 @@ export default function WorkspacePage() {
                 <div
                   key={t.id}
                   onClick={async () => {
-                    const newStatus =
-                      t.status === "TODO" ? "DONE" : "TODO";
+                    const newStatus = t.status === "TODO" ? "DONE" : "TODO";
 
                     await updateTaskStatus(id, t.id, newStatus);
                     updateTask(t.id, { status: newStatus });
@@ -188,7 +196,7 @@ export default function WorkspacePage() {
                       {t.status}
                     </span>
 
-                    <span className="text-xs px-2 py-1 rounded bg-pink-500/20 text-pink-400">
+                    <span className="text-xs px-2 py-1 rounded bg-red-400/20 text-red-400">
                       {t.priority}
                     </span>
                   </div>
@@ -196,9 +204,7 @@ export default function WorkspacePage() {
               ))}
 
               {tasks.length === 0 && (
-                <p className="text-gray-500 text-sm italic">
-                  No tasks yet 🚀
-                </p>
+                <p className="text-gray-500 text-sm italic">No tasks yet 🚀</p>
               )}
             </div>
           </div>

@@ -101,12 +101,14 @@ export default function MemberList({ workspaceId }) {
                 {m.role}
               </span>
 
-              <button
+              {m.role !== "admin" && (
+                <button
                 onClick={() => handleRemove(m.id)}
                 className="text-red-400 text-sm hover:underline"
               >
                 Remove
               </button>
+              )}
             </div>
           </div>
         ))}
