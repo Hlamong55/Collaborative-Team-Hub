@@ -3,13 +3,6 @@ export default function Modal({ children, onClose }) {
     <div className="fixed inset-0 flex items-center justify-center bg-black/70 backdrop-blur-sm z-50">
       <div className="bg-slate-900 p-6 rounded-2xl w-[90%] max-w-md border border-white/10 shadow-xl">
         {children}
-
-        <button
-          onClick={onClose}
-          className="absolute top-42 right-90 text-gray-400"
-        >
-          Close
-        </button>
       </div>
     </div>
   );
