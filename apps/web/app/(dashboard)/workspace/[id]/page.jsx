@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
+import api from "../../../../lib/axios";
 import {
   getWorkspaceById,
   getGoals,
@@ -11,7 +12,7 @@ import {
   updateTaskStatus,
 } from "../../../../lib/api";
 
-import { useWorkspaceStore } from "../../../../lib/store";
+import { useWorkspaceStore, useAuthStore } from "../../../../lib/store";
 import MemberList from "./members/MemberList";
 import GoalCard from "./components/GoalCard";
 
@@ -30,15 +31,22 @@ export default function WorkspacePage() {
     updateTask,
   } = useWorkspaceStore();
 
+  const user = useAuthStore((s) => s.user);
+
   const [goalTitle, setGoalTitle] = useState("");
   const [taskTitle, setTaskTitle] = useState("");
-  const [loading, setLoading] = useState(true);
   const [taskGoalId, setTaskGoalId] = useState("");
+  const [loading, setLoading] = useState(true);
+  const [myRole, setMyRole] = useState(null);
 
   useEffect(() => {
-    if (id) load();
+    if (id) {
+      load();
+      loadRole();
+    }
   }, [id]);
 
+  /* ================= LOAD DATA ================= */
   const load = async () => {
     try {
       setLoading(true);
@@ -51,39 +59,52 @@ export default function WorkspacePage() {
       setGoals(gs);
       setTasks(ts);
     } catch (err) {
-      console.log(err);
+      console.error(err);
+      alert("Failed to load workspace");
     } finally {
       setLoading(false);
     }
   };
 
+  /* ================= LOAD ROLE ================= */
+  const loadRole = async () => {
+    try {
+      const res = await api.get(`/workspaces/${id}/members`);
+
+      const me = res.data.find(
+        (m) => m.user.id === user?.id
+      );
+
+      setMyRole(me?.role);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   /* ================= CREATE ================= */
+
   const handleCreateGoal = async () => {
     if (!goalTitle.trim()) return;
 
-    const newGoal = await createGoal(id, { title: goalTitle });
-    addGoal(newGoal);
-    setGoalTitle("");
-  };
-
-  const handleCreateTask = async () => {
-    if (!taskTitle.trim()) return;
-
-    const newTask = await createTask(id, { title: taskTitle });
-    addTask(newTask);
-    setTaskTitle("");
+    try {
+      const newGoal = await createGoal(id, { title: goalTitle });
+      addGoal(newGoal);
+      setGoalTitle("");
+    } catch (err) {
+      alert("Goal create failed");
+    }
   };
 
   const handleAddTask = async () => {
     try {
       if (!taskTitle.trim()) return;
 
-      const t = await createTask(workspaceId, {
+      const t = await createTask(id, {
         title: taskTitle,
         goalId: taskGoalId || null,
       });
 
-      setTasks([...tasks, t]);
+      addTask(t);
       setTaskTitle("");
       setTaskGoalId("");
     } catch (err) {
@@ -91,36 +112,37 @@ export default function WorkspacePage() {
     }
   };
 
-  /* ================= UI ================= */
+  /* ================= LOADING ================= */
   if (loading) {
     return (
       <div className="text-white p-6">
-        <p className="text-xl font-medium text-gray-400 animate-pulse">
+        <p className="text-xl text-gray-400 animate-pulse">
           Loading workspace...
         </p>
       </div>
     );
   }
 
+  /* ================= UI ================= */
   return (
     <div className="text-white p-6 space-y-6">
+
       {/* HEADER */}
-      <div className="flex justify-between items-center">
-        <div>
-          <p className="text-sm text-gray-400">Workspace</p>
-          <h1 className="text-2xl font-bold">
-            {currentWorkspace?.name || "Loading..."}
-          </h1>
-        </div>
+      <div>
+        <p className="text-sm text-gray-400">Workspace</p>
+        <h1 className="text-2xl font-bold">
+          {currentWorkspace?.name}
+        </h1>
       </div>
 
-      {/* MAIN GRID */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* LEFT SIDE (GOALS + TASKS) */}
+
+        {/* LEFT */}
         <div className="lg:col-span-2 space-y-6">
+
           {/* GOALS */}
           <div className="bg-white/5 p-6 rounded-2xl border border-white/10">
-            <h2 className="font-semibold mb-4 text-lg">Goals</h2>
+            <h2 className="mb-4 text-lg font-semibold">Goals</h2>
 
             {/* CREATE */}
             <div className="flex gap-2 mb-4">
@@ -128,11 +150,13 @@ export default function WorkspacePage() {
                 value={goalTitle}
                 onChange={(e) => setGoalTitle(e.target.value)}
                 placeholder="New goal..."
-                className="px-3 py-2 bg-white/10 rounded w-full outline-none"
+                className="px-3 py-2 bg-white/10 rounded w-full"
               />
+
               <button
+                disabled={myRole !== "ADMIN"}
                 onClick={handleCreateGoal}
-                className="bg-gradient-to-r from-purple-600 to-pink-600 px-4 rounded font-medium hover:scale-105 transition"
+                className="bg-purple-600 px-4 rounded disabled:opacity-50"
               >
                 +Add
               </button>
@@ -147,22 +171,18 @@ export default function WorkspacePage() {
                   onUpdate={(goalId, updated) => {
                     setGoals(
                       goals.map((x) =>
-                        x.id === goalId ? { ...x, ...updated } : x,
-                      ),
+                        x.id === goalId ? { ...x, ...updated } : x
+                      )
                     );
                   }}
                 />
               ))}
-
-              {goals.length === 0 && (
-                <p className="text-gray-500 text-sm italic">No goals yet 🚀</p>
-              )}
             </div>
           </div>
 
           {/* TASKS */}
           <div className="bg-white/5 p-6 rounded-2xl border border-white/10">
-            <h2 className="font-semibold mb-4 text-lg">Tasks</h2>
+            <h2 className="mb-4 text-lg font-semibold">Tasks</h2>
 
             {/* CREATE */}
             <div className="flex gap-2 flex-col sm:flex-row">
@@ -170,33 +190,26 @@ export default function WorkspacePage() {
                 value={taskTitle}
                 onChange={(e) => setTaskTitle(e.target.value)}
                 placeholder="New task..."
-                className="flex-1 px-3 py-2 rounded bg-white/10 outline-none"
+                className="flex-1 px-3 py-2 bg-white/10 rounded"
               />
 
-              {/* GOAL DROPDOWN */}
               <select
                 value={taskGoalId}
                 onChange={(e) => setTaskGoalId(e.target.value)}
-                className="px-3 py-2 rounded bg-slate-800 text-white border border-white/10 outline-none"
+                className="px-3 py-2 bg-slate-800 rounded"
               >
-                <option value="" className="bg-slate-800 text-white">
-                  No Goal
-                </option>
-
+                <option value="">No Goal</option>
                 {goals.map((g) => (
-                  <option
-                    key={g.id}
-                    value={g.id}
-                    className="bg-slate-800 text-white"
-                  >
+                  <option key={g.id} value={g.id}>
                     {g.title}
                   </option>
                 ))}
               </select>
 
               <button
+                disabled={myRole !== "ADMIN"}
                 onClick={handleAddTask}
-                className="bg-gradient-to-r from-purple-600 to-pink-600 px-4 rounded"
+                className="bg-purple-600 px-4 rounded disabled:opacity-50"
               >
                 +Add
               </button>
@@ -209,45 +222,30 @@ export default function WorkspacePage() {
                   key={t.id}
                   onClick={() =>
                     updateTaskStatus(
-                      workspaceId,
+                      id,
                       t.id,
-                      t.status === "TODO" ? "DONE" : "TODO",
+                      t.status === "TODO" ? "DONE" : "TODO"
                     )
                   }
-                  className="bg-white/5 p-4 rounded-xl border border-white/10 cursor-pointer hover:border-purple-400 transition"
+                  className="bg-white/5 p-4 rounded-xl border cursor-pointer"
                 >
-                  <p className="font-medium">{t.title}</p>
+                  <p>{t.title}</p>
 
                   <div className="flex gap-2 mt-2 text-xs">
-                    <span className="bg-blue-500/20 text-blue-400 px-2 py-1 rounded">
-                      {t.status}
-                    </span>
-
-                    <span className="bg-pink-500/20 text-pink-400 px-2 py-1 rounded">
-                      {t.priority}
-                    </span>
-
-                    {/* 🔥 GOAL TAG */}
-                    {t.goal && (
-                      <span className="bg-purple-500/20 text-purple-400 px-2 py-1 rounded">
-                        {t.goal.title}
-                      </span>
-                    )}
+                    <span>{t.status}</span>
+                    {t.goal && <span>{t.goal.title}</span>}
                   </div>
                 </div>
               ))}
-
-              {tasks.length === 0 && (
-                <p className="text-gray-500 text-sm italic">No tasks yet 🚀</p>
-              )}
             </div>
           </div>
         </div>
 
-        {/* RIGHT SIDE (MEMBERS) */}
-        <div className="space-y-6">
-          <MemberList workspaceId={id} />
+        {/* RIGHT */}
+        <div>
+          <MemberList workspaceId={id} myRole={myRole} />
         </div>
+
       </div>
     </div>
   );

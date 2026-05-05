@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import api from "../../../../../lib/axios";
 import { useWorkspaceStore } from "../../../../../lib/store";
 
-export default function MemberList({ workspaceId }) {
+export default function MemberList({ workspaceId, myRole }) {
   const [members, setMembers] = useState([]);
   const [email, setEmail] = useState("");
 
