@@ -1,24 +1,22 @@
 "use client";
 
 import { useWorkspaceStore } from "../lib/store";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 
 export default function Sidebar() {
   const ws = useWorkspaceStore((s) => s.currentWorkspace);
   const router = useRouter();
+  const path = usePathname();
+
+  const isActive = (p) => path.includes(p);
 
   return (
     <aside className="w-64 bg-white/5 backdrop-blur-xl border-r border-white/10 p-5 hidden md:block">
       
-      {/* LOGO */}
-      <h2
-        onClick={() => router.push("/dashboard")}
-        className="text-xl font-bold mb-6 text-purple-400 cursor-pointer"
-      >
+      <h2 className="text-xl font-bold mb-6 text-purple-400">
         TeamHub
       </h2>
 
-      {/* WORKSPACE */}
       <div className="mb-6">
         <p className="text-xs text-gray-400">Workspace</p>
         <h3 className="font-semibold">
@@ -26,26 +24,31 @@ export default function Sidebar() {
         </h3>
       </div>
 
-      {/* NAVIGATION */}
       <nav className="space-y-3 text-gray-300">
 
         <p
-          onClick={() => router.push("/dashboard")}
-          className="hover:text-white cursor-pointer"
+          onClick={() => ws && router.push(`/workspace/${ws.id}/dashboard`)}
+          className={`cursor-pointer ${
+            isActive("dashboard") ? "text-white font-semibold" : ""
+          }`}
         >
           Dashboard
         </p>
 
         <p
-          onClick={() => ws && router.push(`/workspace/${ws.id}`)}
-          className="hover:text-white cursor-pointer"
+          onClick={() => ws && router.push(`/workspace/${ws.id}/goals`)}
+          className={`cursor-pointer ${
+            isActive("goals") ? "text-white font-semibold" : ""
+          }`}
         >
           Goals
         </p>
 
         <p
-          onClick={() => ws && router.push(`/workspace/${ws.id}`)}
-          className="hover:text-white cursor-pointer"
+          onClick={() => ws && router.push(`/workspace/${ws.id}/tasks`)}
+          className={`cursor-pointer ${
+            isActive("tasks") ? "text-white font-semibold" : ""
+          }`}
         >
           Tasks
         </p>

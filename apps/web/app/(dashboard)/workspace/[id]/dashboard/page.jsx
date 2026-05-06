@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { getGoals, getTasks } from "../../../../lib/api";
+import { getGoals, getTasks } from "../../../../../lib/api";
 import { useParams } from "next/navigation";
 import {
   PieChart,
