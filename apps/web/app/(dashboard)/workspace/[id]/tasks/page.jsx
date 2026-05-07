@@ -16,7 +16,7 @@ export default function TasksPage() {
           onClick={() =>
             setView(view === "list" ? "kanban" : "list")
           }
-          className="bg-purple-600 px-3 py-1 rounded"
+          className="font-semibold bg-purple-700 px-3.5 py-1 rounded-lg hover:bg-purple-600 hover:scale-105 transition"
         >
           {view === "list" ? "Kanban" : "List"}
         </button>

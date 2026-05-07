@@ -17,7 +17,8 @@ export default function Sidebar() {
         TeamHub
       </h2>
 
-      <div className="mb-6">
+      <div 
+      className="mb-6">
         <p className="text-xs text-gray-400">Workspace</p>
         <h3 className="font-semibold">
           {ws ? ws.name : "Select workspace"}
