@@ -20,10 +20,12 @@ app.use(
 const authRoutes = require("./routes/auth.routes");
 const workspaceRoutes = require("./routes/workspace.routes");
 const goalRoutes = require("./routes/goal.routes");
+const announcementRoutes = require("./routes/announcement.routes");
 
 app.use("/api/auth", authRoutes);
 app.use("/api/workspaces", workspaceRoutes);
 app.use("/api/goals", goalRoutes);
+app.use("/api/announcements", announcementRoutes);
 
 
 // Test
