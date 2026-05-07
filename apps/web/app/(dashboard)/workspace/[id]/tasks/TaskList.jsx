@@ -1,7 +1,7 @@
 "use client";
 
-import { useWorkspaceStore } from "../../../../lib/store";
-import { updateTaskStatus } from "../../../../lib/api";
+import { useWorkspaceStore } from "../../../../../lib/store";
+import { updateTaskStatus } from "../../../../../lib/api";
 
 export default function TaskList() {
   const { tasks, currentWorkspace, updateTask } =

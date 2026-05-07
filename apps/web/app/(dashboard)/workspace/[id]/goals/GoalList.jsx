@@ -1,6 +1,6 @@
 "use client";
 
-import { useWorkspaceStore } from "../../../../lib/store";
+import { useWorkspaceStore } from "../../../../../lib/store";
 
 export default function GoalList() {
   const { goals } = useWorkspaceStore();
