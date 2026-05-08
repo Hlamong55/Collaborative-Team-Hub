@@ -41,7 +41,7 @@ export default function AnnouncementPage() {
       </h1>
 
       {/* create */}
-      <div className="flex gap-2 mb-6">
+      <div className="flex gap-3 mb-6">
         <input
           value={text}
           onChange={(e) => setText(e.target.value)}
