@@ -59,3 +59,30 @@ export const updateMilestone = async (milestoneId, status) => {
   );
   return res.data;
 };
+
+
+// ANNOUNCEMENTS
+export const getAnnouncements = async (workspaceId) => {
+  const res = await api.get(`/announcements/${workspaceId}`);
+  return res.data;
+};
+
+export const createAnnouncement = async (workspaceId, data) => {
+  const res = await api.post(`/announcements/${workspaceId}`, data);
+  return res.data;
+};
+
+export const addComment = async (announcementId, data) => {
+  const res = await api.post(
+    `/announcements/${announcementId}/comments`,
+    data
+  );
+  return res.data;
+};
+
+export const getComments = async (announcementId) => {
+  const res = await api.get(
+    `/announcements/${announcementId}/comments`
+  );
+  return res.data;
+};
