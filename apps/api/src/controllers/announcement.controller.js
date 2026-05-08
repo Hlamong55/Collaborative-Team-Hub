@@ -1,79 +1,49 @@
 const prisma = require("../utils/prisma");
 
-// CREATE
+// create
 exports.createAnnouncement = async (req, res) => {
-  try {
-    const { workspaceId } = req.params;
-    const { content } = req.body;
+  const { workspaceId } = req.params;
+  const { content } = req.body;
 
-    const post = await prisma.announcement.create({
-      data: {
-        content,
-        workspaceId,
-        authorId: req.user.id,
-      },
-    });
+  const a = await prisma.announcement.create({
+    data: {
+      content,
+      workspaceId,
+      userId: req.user.id,
+    },
+  });
 
-    res.json(post);
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: "Create failed" });
-  }
+  res.json(a);
 };
 
-// GET ALL
+// get
 exports.getAnnouncements = async (req, res) => {
-  try {
-    const { workspaceId } = req.params;
+  const { workspaceId } = req.params;
 
-    const posts = await prisma.announcement.findMany({
-      where: { workspaceId },
-      include: {
-        author: { select: { id: true, name: true } },
-      },
-      orderBy: { createdAt: "desc" },
-    });
+  const data = await prisma.announcement.findMany({
+    where: { workspaceId },
+    orderBy: [
+      { pinned: "desc" },
+      { createdAt: "desc" },
+    ],
+    include: {
+      user: { select: { name: true } },
+    },
+  });
 
-    res.json(posts);
-  } catch (err) {
-    res.status(500).json({ message: "Fetch failed" });
-  }
+  res.json(data);
 };
 
-// ADD COMMENT
-exports.addComment = async (req, res) => {
-  try {
-    const { announcementId } = req.params;
-    const { text } = req.body;
+// pin
+exports.togglePin = async (req, res) => {
+  const { id } = req.params;
 
-    const c = await prisma.comment.create({
-      data: {
-        text,
-        userId: req.user.id,
-        announcementId,
-      },
-    });
+  const a = await prisma.announcement.update({
+    where: { id },
+    data: {
+      pinned: true,
+    },
+  });
 
-    res.json(c);
-  } catch (err) {
-    res.status(500).json({ message: "Comment failed" });
-  }
-};
-
-// GET COMMENTS
-exports.getComments = async (req, res) => {
-  try {
-    const { announcementId } = req.params;
-
-    const comments = await prisma.comment.findMany({
-      where: { announcementId },
-      include: {
-        user: { select: { id: true, name: true } },
-      },
-    });
-
-    res.json(comments);
-  } catch (err) {
-    res.status(500).json({ message: "Fetch comments failed" });
-  }
+  res.json(a);
 };

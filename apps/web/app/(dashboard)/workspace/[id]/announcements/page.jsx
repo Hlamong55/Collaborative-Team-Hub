@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import {
   getAnnouncements,
   createAnnouncement,
+  pinAnnouncement
 } from "../../../../../lib/api";
 import { useWorkspaceStore } from "../../../../../lib/store";
 
@@ -33,6 +34,11 @@ export default function AnnouncementPage() {
     load();
   };
 
+  const handlePin = async (id) => {
+    await pinAnnouncement(id);
+    load();
+  };
+
   return (
     <div className="text-white p-6">
 
@@ -40,14 +46,15 @@ export default function AnnouncementPage() {
         Announcements
       </h1>
 
-      {/* create */}
+      {/* CREATE */}
       <div className="flex gap-3 mb-6">
         <input
           value={text}
           onChange={(e) => setText(e.target.value)}
           placeholder="Write announcement..."
-          className="flex-1 px-3 py-2.5 bg-white/15 rounded"
+          className="flex-1 px-3 py-2.5 bg-white/10 rounded outline-none focus:ring-2 focus:ring-purple-500"
         />
+
         <button
           onClick={handleCreate}
           className="bg-purple-700 font-medium px-6 rounded hover:bg-purple-600 hover:scale-105 transition"
@@ -56,17 +63,48 @@ export default function AnnouncementPage() {
         </button>
       </div>
 
-      {/* list */}
+      {/* LIST */}
       <div className="space-y-4">
         {posts.map((p) => (
           <div
             key={p.id}
-            className="bg-white/5 p-4 rounded border border-white/10"
+            className={`p-4 rounded border transition
+              ${
+                p.pinned
+                  ? "bg-purple-600/10 border-purple-500/40"
+                  : "bg-white/5 border-white/10"
+              }`}
           >
-            <p className="font-medium">{p.content}</p>
-            <p className="text-xs text-gray-400 mt-2">
-              by {p.author?.name}
-            </p>
+            {/* TOP */}
+            <div className="flex justify-between items-start">
+
+              <p className="font-medium">{p.content}</p>
+
+              {/* PIN BUTTON */}
+              <button
+                onClick={() => handlePin(p.id)}
+                className="text-sm hover:scale-110 transition"
+                title="Pin"
+              >
+                📌
+              </button>
+
+            </div>
+
+            {/* META */}
+            <div className="flex justify-between items-center mt-3">
+
+              <p className="text-xs text-gray-400">
+                by {p.author?.name}
+              </p>
+
+              {p.pinned && (
+                <span className="text-xs bg-yellow-500/20 text-yellow-400 px-2 py-1 rounded">
+                  Pinned
+                </span>
+              )}
+
+            </div>
           </div>
         ))}
 

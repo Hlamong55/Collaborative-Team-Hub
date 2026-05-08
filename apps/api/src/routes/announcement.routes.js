@@ -6,11 +6,13 @@ const {
   getAnnouncements,
   addComment,
   getComments,
+  togglePin
 } = require("../controllers/announcement.controller");
 
 // create + list
 router.post("/:workspaceId", auth, createAnnouncement);
 router.get("/:workspaceId", auth, getAnnouncements);
+router.patch("/pin/:id", auth, togglePin);
 
 // comments
 router.post("/:announcementId/comments", auth, addComment);

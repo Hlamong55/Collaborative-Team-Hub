@@ -86,3 +86,8 @@ export const getComments = async (announcementId) => {
   );
   return res.data;
 };
+
+export const pinAnnouncement = async (id) => {
+  const res = await api.patch(`/announcements/pin/${id}`);
+  return res.data;
+};
