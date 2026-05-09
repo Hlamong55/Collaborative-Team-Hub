@@ -39,7 +39,7 @@ export default function RegisterPage() {
           Create Account 🚀
         </h1>
 
-        <p className="text-center text-gray-400 mb-8">
+        <p className="text-center font-medium text-gray-400 mb-8">
           Start managing your team
         </p>
 
@@ -85,7 +85,7 @@ export default function RegisterPage() {
         {/* BUTTON */}
         <button
           onClick={handleRegister}
-          className="w-full py-3 rounded-lg bg-gradient-to-r from-purple-500 to-pink-500 text-white font-semibold hover:opacity-90 transition"
+          className="w-full py-3 rounded-lg bg-gradient-to-r from-purple-500 to-pink-500 text-white font-semibold hover:opacity-80 hover:scale-105 transition"
         >
           Register
         </button>
@@ -95,7 +95,7 @@ export default function RegisterPage() {
           Already have an account?{" "}
           <span
             onClick={() => router.push("/login")}
-            className="text-purple-400 cursor-pointer hover:underline"
+            className="text-purple-400 cursor-pointer hover:underline hover:font-bold"
           >
             Login
           </span>

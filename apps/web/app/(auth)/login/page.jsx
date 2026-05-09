@@ -56,7 +56,7 @@ export default function LoginPage() {
 
         <button
           onClick={handleLogin}
-          className="w-full py-3 rounded-lg bg-gradient-to-r from-purple-500 to-pink-500 text-white font-semibold hover:opacity-90 transition"
+          className="w-full py-3 rounded-lg bg-gradient-to-r from-purple-500 to-pink-500 text-white font-semibold hover:opacity-80 hover:scale-105 transition"
         >
           Login
         </button>
