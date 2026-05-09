@@ -20,7 +20,11 @@ exports.register = async (req, res) => {
 
     res.json({ id: user.id, email: user.email, name: user.name });
   } catch (e) {
-    res.status(500).json({ message: "Register failed" });
+  console.log(e);
+
+  res.status(500).json({
+    message: "Register failed",
+  });
   }
 };
 
@@ -50,7 +54,11 @@ exports.login = async (req, res) => {
 
     res.json({ message: "Logged in" });
   } catch (e) {
-    res.status(500).json({ message: "Login failed" });
+  console.log(e);
+
+  res.status(500).json({
+    message: "Login failed",
+  });
   }
 };
 
