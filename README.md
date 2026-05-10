@@ -1,159 +1,173 @@
-# Turborepo starter
+TeamHub 🚀
 
-This Turborepo starter is maintained by the Turborepo core team.
+A modern full-stack collaborative workspace platform built with Next.js, Node.js, Express, Prisma, and PostgreSQL.
 
-## Using this example
+TeamHub helps teams manage goals, tasks, milestones, announcements, and workspace collaboration in a clean SaaS-style interface.
 
-Run the following command:
+🌐 Live Demo
+Frontend
+https://your-vercel-url.vercel.app
+Backend API
+https://your-railway-url.up.railway.app
+✨ Features
+🔐 Authentication
+User registration
+User login
+JWT authentication
+Protected routes
+Cookie-based session management
+🏢 Workspace Management
+Create workspaces
+Workspace descriptions
+Dynamic accent colors
+Workspace-based collaboration
+Workspace switching
+🎯 Goals & Milestones
+Create goals
+Goal status tracking
+Due dates
+Milestones per goal
+Milestone completion tracking
+📋 Task Management
+Create tasks
+Priority levels
+Goal-linked tasks
+Status updates
+Task assignment structure
+🧩 Kanban Board
+Drag & drop task management
+TODO / IN_PROGRESS / DONE columns
+Instant UI updates
+Persistent status changes
+📢 Announcements
+Create announcements
+Pin important announcements
+Announcement comments
+Workspace announcement feed
+📊 Analytics Dashboard
+Task statistics
+Goal statistics
+Progress visualization
+Responsive charts
+🎨 Modern UI/UX
+Glassmorphism UI
+Responsive layout
+Dynamic workspace theming
+Interactive sidebar
+Smooth animations
+🛠️ Tech Stack
+Frontend
+Next.js 16
+React
+Tailwind CSS
+Zustand
+Axios
+Recharts
+@hello-pangea/dnd
+Backend
+Node.js
+Express.js
+Prisma ORM
+PostgreSQL
+JWT Authentication
+bcrypt
+📂 Monorepo Structure
+team-hub/
+│
+├── apps/
+│   ├── web/      # Next.js frontend
+│   └── api/      # Express backend
+│
+├── packages/
+│
+└── README.md
+⚙️ Environment Variables
+Frontend (apps/web/.env.local)
+NEXT_PUBLIC_API_URL=http://localhost:5000/api
+Backend (apps/api/.env)
+DATABASE_URL=your_database_url
 
-```sh
-npx create-turbo@latest
-```
+JWT_ACCESS_SECRET=your_secret
 
-## What's inside?
+CLIENT_URL=http://localhost:3000
 
-This Turborepo includes the following packages/apps:
+PORT=5000
+🚀 Installation & Setup
+1️⃣ Clone Repository
+git clone https://github.com/your-username/team-hub.git
 
-### Apps and Packages
+cd team-hub
+2️⃣ Install Dependencies
+npm install
+3️⃣ Setup Backend
+cd apps/api
 
-- `docs`: a [Next.js](https://nextjs.org/) app
-- `web`: another [Next.js](https://nextjs.org/) app
-- `@repo/ui`: a stub React component library shared by both `web` and `docs` applications
-- `@repo/eslint-config`: `eslint` configurations (includes `eslint-config-next` and `eslint-config-prettier`)
-- `@repo/typescript-config`: `tsconfig.json`s used throughout the monorepo
+npm install
+4️⃣ Prisma Setup
+npx prisma generate
 
-Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
+npx prisma db push
+5️⃣ Run Backend
+npm run dev
 
-### Utilities
+Backend runs on:
 
-This Turborepo has some additional tools already setup for you:
+http://localhost:5000
+6️⃣ Run Frontend
+cd ../web
 
-- [TypeScript](https://www.typescriptlang.org/) for static type checking
-- [ESLint](https://eslint.org/) for code linting
-- [Prettier](https://prettier.io) for code formatting
+npm install
 
-### Build
+npm run dev
 
-To build all apps and packages, run the following command:
+Frontend runs on:
 
-With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed (recommended):
+http://localhost:3000
+🧪 Demo Credentials
+Email: demo@gmail.com
+Password: 123456
+📸 Screenshots
+Dashboard
+Workspace management UI
+Dynamic accent themes
+Goals
+Goal and milestone tracking
+Tasks
+Kanban task management
+Announcements
+Team communication system
+Analytics
+Charts and statistics dashboard
+🔒 Security
+Password hashing using bcrypt
+JWT authentication
+Protected API routes
+Workspace role-based access structure
+📈 Future Improvements
+Real-time collaboration with Socket.io
+File uploads
+Rich text editor
+Notification system
+Activity logs
+Team invitations via email
+👨‍💻 Author
+Rakib Hasan
 
-```sh
-cd my-turborepo
-turbo build
-```
+Built as a full-stack collaborative workspace platform assignment project.
 
-Without global `turbo`, use your package manager:
+⭐ Final Notes
 
-```sh
-cd my-turborepo
-npx turbo build
-npm dlx turbo build
-npm exec turbo build
-```
+This project demonstrates:
 
-You can build a specific package by using a [filter](https://turborepo.dev/docs/crafting-your-repository/running-tasks#using-filters):
+Full-stack architecture
+Scalable workspace structure
+Modern React patterns
+REST API design
+Prisma relational modeling
+SaaS-style UI/UX
+State management
+Authentication flow
+Real-world collaboration features
+📄 License
 
-With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed:
-
-```sh
-turbo build --filter=docs
-```
-
-Without global `turbo`:
-
-```sh
-npx turbo build --filter=docs
-npm exec turbo build --filter=docs
-npm exec turbo build --filter=docs
-```
-
-### Develop
-
-To develop all apps and packages, run the following command:
-
-With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed (recommended):
-
-```sh
-cd my-turborepo
-turbo dev
-```
-
-Without global `turbo`, use your package manager:
-
-```sh
-cd my-turborepo
-npx turbo dev
-npm exec turbo dev
-npm exec turbo dev
-```
-
-You can develop a specific package by using a [filter](https://turborepo.dev/docs/crafting-your-repository/running-tasks#using-filters):
-
-With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed:
-
-```sh
-turbo dev --filter=web
-```
-
-Without global `turbo`:
-
-```sh
-npx turbo dev --filter=web
-npm exec turbo dev --filter=web
-npm exec turbo dev --filter=web
-```
-
-### Remote Caching
-
-> [!TIP]
-> Vercel Remote Cache is free for all plans. Get started today at [vercel.com](https://vercel.com/signup?utm_source=remote-cache-sdk&utm_campaign=free_remote_cache).
-
-Turborepo can use a technique known as [Remote Caching](https://turborepo.dev/docs/core-concepts/remote-caching) to share cache artifacts across machines, enabling you to share build caches with your team and CI/CD pipelines.
-
-By default, Turborepo will cache locally. To enable Remote Caching you will need an account with Vercel. If you don't have an account you can [create one](https://vercel.com/signup?utm_source=turborepo-examples), then enter the following commands:
-
-With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed (recommended):
-
-```sh
-cd my-turborepo
-turbo login
-```
-
-Without global `turbo`, use your package manager:
-
-```sh
-cd my-turborepo
-npx turbo login
-npm exec turbo login
-npm exec turbo login
-```
-
-This will authenticate the Turborepo CLI with your [Vercel account](https://vercel.com/docs/concepts/personal-accounts/overview).
-
-Next, you can link your Turborepo to your Remote Cache by running the following command from the root of your Turborepo:
-
-With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed:
-
-```sh
-turbo link
-```
-
-Without global `turbo`:
-
-```sh
-npx turbo link
-npm exec turbo link
-npm exec turbo link
-```
-
-## Useful Links
-
-Learn more about the power of Turborepo:
-
-- [Tasks](https://turborepo.dev/docs/crafting-your-repository/running-tasks)
-- [Caching](https://turborepo.dev/docs/crafting-your-repository/caching)
-- [Remote Caching](https://turborepo.dev/docs/core-concepts/remote-caching)
-- [Filtering](https://turborepo.dev/docs/crafting-your-repository/running-tasks#using-filters)
-- [Configuration Options](https://turborepo.dev/docs/reference/configuration)
-- [CLI Usage](https://turborepo.dev/docs/reference/command-line-reference)
+This project is for educational and assignment purposes.
