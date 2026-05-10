@@ -65,7 +65,7 @@ export default function Sidebar() {
           TeamHub
         </h2>
 
-        <p className="text-xs text-gray-500 mt-1">
+        <p className="text-xs text-gray-300 mt-1">
           Team collaboration platform
         </p>
 
@@ -74,7 +74,7 @@ export default function Sidebar() {
       {/* BACK */}
       <button
         onClick={() => router.push("/dashboard")}
-        className="mb-7 text-sm text-gray-400 hover:text-white transition text-left"
+        className="mb-7 text-sm text-gray-400 hover:text-white transition text-left hover:underline"
       >
         ← All Workspaces
       </button>
@@ -82,7 +82,7 @@ export default function Sidebar() {
       {/* WORKSPACE INFO */}
       <div className="mb-8 bg-white/5 border border-white/10 rounded-2xl p-4">
 
-        <p className="text-xs uppercase tracking-wide text-gray-400 mb-2">
+        <p className="text-xs uppercase tracking-wide text-gray-400 mb-3">
           Current Workspace
         </p>
 
@@ -102,10 +102,6 @@ export default function Sidebar() {
               {ws ? ws.name : "Select workspace"}
             </h3>
 
-            <p className="text-xs text-gray-400">
-              Active workspace
-            </p>
-
           </div>
 
         </div>
@@ -124,34 +120,6 @@ export default function Sidebar() {
         {navItem("Announcements", "announcements")}
 
       </nav>
-
-      {/* BOTTOM */}
-      <div className="mt-auto pt-8">
-
-        <div className="bg-white/5 border border-white/10 rounded-2xl p-4">
-
-          <p className="text-xs text-gray-400 mb-2">
-            Workspace Theme
-          </p>
-
-          <div className="flex gap-2 items-center">
-
-            <div
-              className="w-5 h-5 rounded-full"
-              style={{
-                backgroundColor: accent,
-              }}
-            />
-
-            <span className="text-sm text-white">
-              {accent}
-            </span>
-
-          </div>
-
-        </div>
-
-      </div>
 
     </aside>
   );
