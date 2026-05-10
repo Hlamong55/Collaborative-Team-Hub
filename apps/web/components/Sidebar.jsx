@@ -57,10 +57,7 @@ export default function Sidebar() {
       <div className="mb-8">
 
         <h2
-          className="text-3xl font-extrabold tracking-tight"
-          style={{
-            color: accent,
-          }}
+          className="text-3xl font-extrabold tracking-tight bg-gradient-to-r from-purple-700 to-pink-700 bg-clip-text text-transparent"
         >
           TeamHub
         </h2>
@@ -80,7 +77,11 @@ export default function Sidebar() {
       </button>
 
       {/* WORKSPACE INFO */}
-      <div className="mb-8 bg-white/5 border border-white/10 rounded-2xl p-4">
+      <div className="mb-8 bg-white/5 border rounded-2xl p-4"
+      style={{
+        borderColor: accent
+      }}
+      >
 
         <p className="text-xs uppercase tracking-wide text-gray-400 mb-3">
           Current Workspace
