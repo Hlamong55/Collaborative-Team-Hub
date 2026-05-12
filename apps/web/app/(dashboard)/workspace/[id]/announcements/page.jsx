@@ -83,7 +83,7 @@ export default function AnnouncementPage() {
               {/* PIN BUTTON */}
               <button
                 onClick={() => handlePin(p.id)}
-                className="text-sm hover:scale-110 transition"
+                className="rounded-xl p-1 hover:bg-gray-700 hover:scale-105 transition"
                 title="Pin"
               >
                 📌
@@ -94,8 +94,8 @@ export default function AnnouncementPage() {
             {/* META */}
             <div className="flex justify-between items-center mt-3">
 
-              <p className="text-xs text-gray-400">
-                by {p.author?.name}
+              <p className="text-xs text-gray-300">
+                 From: {p.user?.name || "Unknown"}
               </p>
 
               {p.pinned && (

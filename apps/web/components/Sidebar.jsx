@@ -4,10 +4,7 @@ import { useWorkspaceStore } from "../lib/store";
 import { useRouter, usePathname } from "next/navigation";
 
 export default function Sidebar() {
-
-  const ws = useWorkspaceStore(
-    (s) => s.currentWorkspace
-  );
+  const ws = useWorkspaceStore((s) => s.currentWorkspace);
 
   const router = useRouter();
   const path = usePathname();
@@ -18,30 +15,34 @@ export default function Sidebar() {
 
   const isActive = (route) => {
 
-    // MAIN OVERVIEW PAGE
-    if (route === "") {
-      return path === `/workspace/${ws?.id}`;
-    }
+  if (!ws) return false;
+  const workspaceBase = `/workspace/${ws.id}`;
 
-    return path.includes(route);
-  };
+  if (route === "") {
+    return path === workspaceBase;
+  }
+
+  return path === `${workspaceBase}/${route}`;
+};
 
   /* ================= NAV ITEM ================= */
 
   const navItem = (label, route) => {
-
     const active = isActive(route);
 
-    const href = route
-      ? `/workspace/${ws.id}/${route}`
-      : `/workspace/${ws.id}`;
+    const href = ws
+      ? route
+        ? `/workspace/${ws.id}/${route}`
+        : `/workspace/${ws.id}`
+      : "/dashboard";
 
     return (
       <div
-        onClick={() =>
-          ws && router.push(href)
-        }
+        onClick={() => {
+          if (!ws) return;
 
+          router.push(href);
+        }}
         style={
           active
             ? {
@@ -52,11 +53,10 @@ export default function Sidebar() {
               }
             : {}
         }
-
         className={`
           px-4
-          py-3
-          rounded-xl
+          py-2
+          rounded-lg
           cursor-pointer
           transition-all
           duration-300
@@ -65,7 +65,7 @@ export default function Sidebar() {
           ${
             active
               ? "font-semibold"
-              : "border-transparent text-gray-300 hover:bg-white/10 hover:text-white hover:translate-x-1"
+              : "border-transparent text-gray-300 hover:bg-white/10 hover:text-white "
           }
         `}
       >
@@ -76,14 +76,12 @@ export default function Sidebar() {
 
   return (
     <aside className="w-64 bg-white/5 backdrop-blur-xl border-r border-white/10 p-5 hidden md:flex flex-col">
-
       {/* ================= LOGO ================= */}
 
-      <div className="mb-8">
-
+      <div className="mb-10">
         <h2
           className="
-            text-3xl
+            text-4xl
             font-extrabold
             tracking-tight
             bg-gradient-to-r
@@ -96,21 +94,17 @@ export default function Sidebar() {
           TeamHub
         </h2>
 
-        <p className="text-xs text-gray-300 mt-1">
+        <p className="text-xs text-gray-300 mt-1 ml-1.5">
           Team collaboration platform
         </p>
-
       </div>
 
       {/* ================= BACK ================= */}
 
       <button
-        onClick={() =>
-          router.push("/dashboard")
-        }
-
+        onClick={() => router.push("/dashboard")}
         className="
-          mb-7
+          mb-5
           text-sm
           text-gray-400
           hover:text-white
@@ -126,24 +120,21 @@ export default function Sidebar() {
 
       <div
         className="
-          mb-8
+          mb-6
           bg-white/5
           border
           rounded-2xl
           p-4
         "
-
         style={{
           borderColor: accent,
         }}
       >
-
         <p className="text-xs uppercase tracking-wide text-gray-400 mb-3">
           Current Workspace
         </p>
 
         <div className="flex items-center gap-3">
-
           {/* COLOR DOT */}
 
           <div
@@ -154,23 +145,16 @@ export default function Sidebar() {
           />
 
           <div>
-
             <h3 className="font-semibold text-white">
-              {ws
-                ? ws.name
-                : "Select workspace"}
+              {ws ? ws.name : "Select workspace"}
             </h3>
-
           </div>
-
         </div>
-
       </div>
 
       {/* ================= NAVIGATION ================= */}
 
-      <nav className="space-y-2 font-medium">
-
+      <nav className="space-y-1 font-medium">
         {/* OVERVIEW */}
         {navItem("Overview", "")}
 
@@ -184,42 +168,8 @@ export default function Sidebar() {
         {navItem("Tasks", "tasks")}
 
         {/* ANNOUNCEMENTS */}
-        {navItem(
-          "Announcements",
-          "announcements"
-        )}
-
+        {navItem("Announcements", "announcements")}
       </nav>
-
-      {/* ================= BOTTOM ================= */}
-
-      <div className="mt-auto pt-8">
-
-        <div className="bg-white/5 border border-white/10 rounded-2xl p-4">
-
-          <p className="text-xs text-gray-400 mb-2">
-            Workspace Theme
-          </p>
-
-          <div className="flex gap-2 items-center">
-
-            <div
-              className="w-5 h-5 rounded-full"
-              style={{
-                backgroundColor: accent,
-              }}
-            />
-
-            <span className="text-sm text-white">
-              {accent}
-            </span>
-
-          </div>
-
-        </div>
-
-      </div>
-
     </aside>
   );
 }

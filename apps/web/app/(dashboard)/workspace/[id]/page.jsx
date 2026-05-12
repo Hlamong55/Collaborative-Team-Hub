@@ -141,7 +141,7 @@ export default function WorkspacePage() {
         <div className="lg:col-span-2 space-y-6">
 
           {/* GOALS */}
-          <div className="bg-white/5 p-6 rounded-2xl border border-white/10">
+          <div className="bg-white/5 p-5 rounded-2xl border border-white/10">
             <h2 className="mb-4 text-lg font-semibold">Goals</h2>
 
             {/* CREATE */}
@@ -181,7 +181,7 @@ export default function WorkspacePage() {
           </div>
 
           {/* TASKS */}
-          <div className="bg-white/5 p-6 rounded-2xl border border-white/10">
+          <div className="bg-white/5 p-5 rounded-2xl border border-white/10">
             <h2 className="mb-4 text-lg font-semibold">Tasks</h2>
 
             {/* CREATE */}
