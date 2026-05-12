@@ -150,13 +150,13 @@ export default function WorkspacePage() {
                 value={goalTitle}
                 onChange={(e) => setGoalTitle(e.target.value)}
                 placeholder="New goal..."
-                className="px-3 py-2 bg-white/10 rounded w-full"
+                className="px-3 py-2 bg-white/10 rounded-lg w-full"
               />
 
               <button
-                disabled={myRole !== "ADMIN"}
+                // disabled={myRole !== "ADMIN"}
                 onClick={handleCreateGoal}
-                className="bg-purple-600 px-4 rounded disabled:opacity-50"
+                className="bg-purple-600 px-4 rounded-lg disabled:opacity-50"
               >
                 +Add
               </button>
@@ -190,13 +190,13 @@ export default function WorkspacePage() {
                 value={taskTitle}
                 onChange={(e) => setTaskTitle(e.target.value)}
                 placeholder="New task..."
-                className="flex-1 px-3 py-2 bg-white/10 rounded"
+                className="flex-1 px-3 py-2 bg-white/10 rounded-lg"
               />
 
               <select
                 value={taskGoalId}
                 onChange={(e) => setTaskGoalId(e.target.value)}
-                className="px-3 py-2 bg-slate-800 rounded"
+                className="px-3 py-2 bg-slate-800 rounded-lg"
               >
                 <option value="">No Goal</option>
                 {goals.map((g) => (
@@ -207,9 +207,9 @@ export default function WorkspacePage() {
               </select>
 
               <button
-                disabled={myRole !== "ADMIN"}
+                // disabled={myRole !== "ADMIN"}
                 onClick={handleAddTask}
-                className="bg-purple-600 px-4 rounded disabled:opacity-50"
+                className="bg-purple-600 px-4 rounded-lg disabled:opacity-50"
               >
                 +Add
               </button>
