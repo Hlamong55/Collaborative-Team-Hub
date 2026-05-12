@@ -10,9 +10,12 @@ import { useWorkspaceStore } from "../../../../../lib/store";
 
 export default function AnnouncementPage() {
   const { currentWorkspace } = useWorkspaceStore();
+  const ws = useWorkspaceStore((s) => s.currentWorkspace);
 
   const [posts, setPosts] = useState([]);
   const [text, setText] = useState("");
+
+  const accent = ws?.color;
 
   const load = async () => {
     const data = await getAnnouncements(currentWorkspace.id);
@@ -92,10 +95,17 @@ export default function AnnouncementPage() {
             </div>
 
             {/* META */}
-            <div className="flex justify-between items-center mt-3">
+            <div className="flex justify-between items-center mt-2">
 
               <p className="text-xs text-gray-300">
-                 From: {p.user?.name || "Unknown"}
+                 From: <span 
+                 className="font-semibold"
+                 style={{
+          color: accent,
+        }}
+                 >
+                  {p.user?.name || "Unknown"}
+                 </span>
               </p>
 
               {p.pinned && (
