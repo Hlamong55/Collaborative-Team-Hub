@@ -71,9 +71,7 @@ export default function WorkspacePage() {
     try {
       const res = await api.get(`/workspaces/${id}/members`);
 
-      const me = res.data.find(
-        (m) => m.user.id === user?.id
-      );
+      const me = res.data.find((m) => m.user.id === user?.id);
 
       setMyRole(me?.role);
     } catch (err) {
@@ -126,20 +124,15 @@ export default function WorkspacePage() {
   /* ================= UI ================= */
   return (
     <div className="text-white p-6 space-y-6">
-
       {/* HEADER */}
       <div>
         <p className="text-sm text-gray-400">Workspace</p>
-        <h1 className="text-2xl font-bold">
-          {currentWorkspace?.name}
-        </h1>
+        <h1 className="text-2xl font-bold">{currentWorkspace?.name}</h1>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-
         {/* LEFT */}
         <div className="lg:col-span-2 space-y-6">
-
           {/* GOALS */}
           <div className="bg-white/5 p-5 rounded-2xl border border-white/10">
             <h2 className="mb-4 text-lg font-semibold">Goals</h2>
@@ -171,8 +164,8 @@ export default function WorkspacePage() {
                   onUpdate={(goalId, updated) => {
                     setGoals(
                       goals.map((x) =>
-                        x.id === goalId ? { ...x, ...updated } : x
-                      )
+                        x.id === goalId ? { ...x, ...updated } : x,
+                      ),
                     );
                   }}
                 />
@@ -220,13 +213,18 @@ export default function WorkspacePage() {
               {tasks.map((t) => (
                 <div
                   key={t.id}
-                  onClick={() =>
-                    updateTaskStatus(
-                      id,
-                      t.id,
-                      t.status === "TODO" ? "DONE" : "TODO"
-                    )
-                  }
+                  onClick={async () => {
+                    const next =
+                      t.status === "TODO"
+                        ? "IN_PROGRESS"
+                        : t.status === "IN_PROGRESS"
+                          ? "DONE"
+                          : "TODO";
+
+                    const updated = await updateTaskStatus(id, t.id, next);
+
+                    updateTask(t.id, updated);
+                  }}
                   className="bg-white/5 p-4 rounded-xl border cursor-pointer"
                 >
                   <p>{t.title}</p>
@@ -245,7 +243,6 @@ export default function WorkspacePage() {
         <div>
           <MemberList workspaceId={id} myRole={myRole} />
         </div>
-
       </div>
     </div>
   );
