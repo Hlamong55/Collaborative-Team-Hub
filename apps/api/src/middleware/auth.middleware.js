@@ -22,7 +22,6 @@ module.exports = (req, res, next) => {
     next();
 
   } catch (err) {
-    console.log(err);
 
     // expired token
     if (err.name === "TokenExpiredError") {
@@ -32,8 +31,16 @@ module.exports = (req, res, next) => {
     }
 
     // invalid token
-    return res.status(401).json({
+    if (err,name === "JsonWebTokenError") {
+      return res.status(401).json({
       message: "Invalid token",
+      });
+    }
+
+    console.error("Auth Middleware Error:", err);
+
+    return res.status(500).json({
+    message: "Authentication Failed", 
     });
   }
 };
