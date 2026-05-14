@@ -149,9 +149,9 @@ export default function WorkspacePage() {
               <button
                 // disabled={myRole !== "ADMIN"}
                 onClick={handleCreateGoal}
-                className="bg-purple-600 px-4 rounded-lg disabled:opacity-50"
+                className="bg-purple-600 px-4 rounded-lg disabled:opacity-50 hover:bg-purple-700 hover:scale-105 transition"
               >
-                +Add
+                Create
               </button>
             </div>
 
@@ -202,9 +202,9 @@ export default function WorkspacePage() {
               <button
                 // disabled={myRole !== "ADMIN"}
                 onClick={handleAddTask}
-                className="bg-purple-600 px-4 rounded-lg disabled:opacity-50"
+                className="bg-purple-600 px-4 rounded-lg disabled:opacity-50 hover:bg-purple-700 hover:scale-105 transition"
               >
-                +Add
+                Create
               </button>
             </div>
 

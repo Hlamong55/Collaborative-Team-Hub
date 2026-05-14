@@ -68,9 +68,9 @@ export default function MemberList({ workspaceId, myRole }) {
         />
         <button
           onClick={handleAdd}
-          className="bg-gradient-to-r from-purple-600 to-pink-600 px-4 py-2 rounded font-medium hover:scale-105 transition"
+          className="bg-gradient-to-r from-purple-700 to-pink-700 px-4 py-2 rounded font-medium hover:scale-105 transition"
         >
-          Add
+          +Add
         </button>
       </div>
 
