@@ -83,12 +83,12 @@ export default function GoalCard({ goal, onUpdate }) {
           <div
             key={m.id}
             onClick={() => toggle(m)}
-            className="flex justify-between items-center text-sm bg-white/5 px-3 py-2 rounded cursor-pointer hover:border-purple-400 border border-transparent transition"
+            className="flex justify-between items-center text-sm bg-white/5 px-3 py-2 rounded cursor-pointer hover:border-purple-500 border border-gray-600 transition"
           >
             <p
               className={
                 m.status === "DONE"
-                  ? "line-through text-gray-500"
+                  ? "text-gray-500"
                   : "text-white"
               }
             >
@@ -98,8 +98,8 @@ export default function GoalCard({ goal, onUpdate }) {
             <span
               className={`text-xs px-2 py-1 rounded ${
                 m.status === "DONE"
-                  ? "opacity-60 scale-[0.98]"
-                  : "hover:scale-[1.01]"
+                  ? "text-green-500"
+                  : "text-yellow-400"
               }`}
             >
               {m.status}

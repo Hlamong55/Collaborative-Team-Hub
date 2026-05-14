@@ -304,7 +304,7 @@ export default function GoalsPage() {
                         <p
                           className={
                             m.status === "DONE"
-                              ? "line-through text-gray-500"
+                              ? "text-gray-500"
                               : ""
                           }
                         >
