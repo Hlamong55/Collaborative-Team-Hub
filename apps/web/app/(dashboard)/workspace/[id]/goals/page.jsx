@@ -176,7 +176,7 @@ export default function GoalsPage() {
                 <div>
                   <h2 className="text-xl font-semibold">{g.title}</h2>
 
-                  <div className="flex flex-wrap gap-3 mt-3 text-sm text-gray-400">
+                  <div className="flex flex-wrap gap-8 mt-3 text-sm text-gray-400">
                     {/* STATUS */}
 
                     <span>
@@ -185,7 +185,7 @@ export default function GoalsPage() {
                         className={`
                           px-2
                           py-1
-                          rounded-full
+                          rounded-lg
                           text-xs
                           font-medium
 
@@ -193,8 +193,8 @@ export default function GoalsPage() {
                             progress === 100
                               ? "bg-green-500/20 text-green-400"
                               : progress > 0
-                                ? "bg-yellow-500/20 text-yellow-400"
-                                : "bg-blue-500/20 text-blue-400"
+                                ? "bg-blue-500/20 text-blue-400"
+                                : "bg-yellow-500/20 text-yellow-400"
                           }
                         `}
                       >
@@ -219,9 +219,9 @@ export default function GoalsPage() {
                 {/* PROGRESS */}
 
                 <div className="text-right">
-                  <p className="text-sm text-gray-400">Progress</p>
+                  <p className="text-sm text-gray-400 mb-1">Progress</p>
 
-                  <p className="text-3xl font-bold text-purple-400">
+                  <p className="text-3xl font-bold text-green-400">
                     {progress}%
                   </p>
                 </div>
@@ -249,11 +249,11 @@ export default function GoalsPage() {
 
               {/* MILESTONES */}
 
-              <div className="mt-6">
-                <div className="flex justify-between items-center mb-3">
+              <div className="mt-7">
+                <div className="flex justify-between items-center mb-2">
                   <h3 className="font-medium">Milestones</h3>
 
-                  <span className="text-xs text-gray-400">
+                  <span className="text-xs font-medium text-gray-300">
                     {done}/{total} completed
                   </span>
                 </div>
@@ -336,13 +336,13 @@ export default function GoalsPage() {
                   {/* EMPTY */}
 
                   {g.milestones?.length === 0 && (
-                    <p className="text-sm text-gray-400">No milestones yet</p>
+                    <p className="text-sm text-gray-400 italic">No milestones yet</p>
                   )}
                 </div>
 
                 {/* ADD */}
 
-                <div className="flex gap-3 mt-4">
+                <div className="flex gap-2 mt-4">
                   <input
                     value={milestoneInputs[g.id] || ""}
                     onChange={(e) =>
@@ -366,14 +366,14 @@ export default function GoalsPage() {
                     onClick={() => handleAddMilestone(g.id)}
                     className="
                       bg-purple-600
-                      hover:bg-purple-500
-                      px-5
+                      hover:bg-purple-700 hover:scale-105
+                      px-4
                       rounded-xl
                       font-medium
                       transition
                     "
                   >
-                    Add
+                    +Add
                   </button>
                 </div>
               </div>

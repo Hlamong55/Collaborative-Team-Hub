@@ -37,10 +37,10 @@ export default function GoalCard({ goal, onUpdate }) {
   };
 
   return (
-    <div className="bg-white/5 p-4 rounded-xl border border-white/10 space-y-5">
+    <div className="bg-white/5 p-3 rounded-xl border border-white/10 space-y-5">
       {/* TITLE */}
       <div className="flex justify-between items-center">
-        <p className="font-medium">{goal.title}</p>
+        <p className="font-semibold">{goal.title}</p>
         <span className="text-xs px-2 py-1 bg-yellow-500/20 text-yellow-400 rounded">
           {goal.status}
         </span>
@@ -48,7 +48,7 @@ export default function GoalCard({ goal, onUpdate }) {
 
       {/* PROGRESS BAR */}
       <div>
-        <div className="flex justify-between text-xs text-gray-400 mb-1">
+        <div className="flex justify-between text-xs text-gray-300 mb-1.5">
           <span>Progress</span>
           <span>{progress}%</span>
         </div>
@@ -62,23 +62,23 @@ export default function GoalCard({ goal, onUpdate }) {
       </div>
 
       {/* ADD */}
-      <div className="flex gap-2">
+      <div className="flex gap-2.5">
         <input
           value={title}
           onChange={(e) => setTitle(e.target.value)}
           placeholder="Add milestone..."
-          className="flex-1 px-2 py-2 bg-white/10 rounded text-sm outline-none"
+          className="flex-1 px-2 py-2.5 bg-white/10 rounded text-sm outline-none"
         />
         <button
           onClick={handleAdd}
-          className="text-xs bg-purple-600 px-3 rounded hover:scale-105 transition"
+          className="text-xs bg-purple-600 px-3.5 rounded hover:bg-purple-700 hover:scale-105 transition"
         >
           +Add
         </button>
       </div>
 
       {/* LIST */}
-      <div className="space-y-2">
+      <div className="">
         {milestones.map((m) => (
           <div
             key={m.id}
@@ -107,9 +107,6 @@ export default function GoalCard({ goal, onUpdate }) {
           </div>
         ))}
 
-        {milestones.length === 0 && (
-          <p className="text-gray-400 text-xs italic">No milestones yet</p>
-        )}
       </div>
     </div>
   );
