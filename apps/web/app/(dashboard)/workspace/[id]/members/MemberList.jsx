@@ -12,9 +12,7 @@ export default function MemberList({ workspaceId, myRole }) {
 
   const loadMembers = async () => {
     try {
-      const res = await api.get(
-        `/workspaces/${workspaceId}/members`
-      );
+      const res = await api.get(`/workspaces/${workspaceId}/members`);
       setMembers(res.data);
     } catch (err) {
       console.error(err);
@@ -41,9 +39,7 @@ export default function MemberList({ workspaceId, myRole }) {
 
   const handleRemove = async (id) => {
     try {
-      await api.delete(
-        `/workspaces/${workspaceId}/members/${id}`
-      );
+      await api.delete(`/workspaces/${workspaceId}/members/${id}`);
       loadMembers();
     } catch (err) {
       alert("Remove failed");
@@ -52,27 +48,28 @@ export default function MemberList({ workspaceId, myRole }) {
 
   return (
     <div className="bg-white/5 border border-white/10 rounded-2xl p-6">
-
       {/* Header */}
-      <h2 className="text-lg font-semibold mb-4 text-white">
-        Members
-      </h2>
+      <h2 className="text-lg font-semibold mb-4 text-white">Members</h2>
 
       {/* Add Member */}
-      <div className="flex gap-2 mb-5">
-        <input
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          placeholder="Enter email"
-          className="flex-1 px-3 py-2 rounded bg-white/10 text-white outline-none"
-        />
-        <button
-          onClick={handleAdd}
-          className="bg-gradient-to-r from-purple-700 to-pink-700 px-4 py-2 rounded font-medium hover:scale-105 transition"
-        >
-          +Add
-        </button>
-      </div>
+
+      {myRole === "ADMIN" && (
+        <div className="flex gap-2 mb-5">
+          <input
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder="Enter email"
+            className="flex-1 px-3 py-2 rounded bg-white/10 text-white outline-none"
+          />
+
+          <button
+            onClick={handleAdd}
+            className="bg-gradient-to-r from-purple-700 to-pink-700 px-4 py-2 rounded font-medium hover:scale-105 transition"
+          >
+            +Add
+          </button>
+        </div>
+      )}
 
       {/* Member List */}
       <div className="space-y-3">
@@ -85,9 +82,7 @@ export default function MemberList({ workspaceId, myRole }) {
               <p className="font-medium text-white">
                 {m.user.name || "No Name"}
               </p>
-              <p className="text-xs text-gray-400">
-                {m.user.email}
-              </p>
+              <p className="text-xs text-gray-400">{m.user.email}</p>
             </div>
 
             <div className="flex items-center gap-3">
@@ -101,22 +96,20 @@ export default function MemberList({ workspaceId, myRole }) {
                 {m.role}
               </span>
 
-              {m.role !== "admin" && (
+              {m.role !== "admin" && myRole === "ADMIN" && (
                 <button
-                onClick={() => handleRemove(m.id)}
-                className="text-red-400 text-sm hover:underline"
-              >
-                Remove
-              </button>
+                  onClick={() => handleRemove(m.id)}
+                  className="text-red-400 text-sm hover:underline"
+                >
+                  Remove
+                </button>
               )}
             </div>
           </div>
         ))}
 
         {members.length === 0 && (
-          <p className="text-gray-400 text-sm">
-            No members yet
-          </p>
+          <p className="text-gray-400 text-sm">No members yet</p>
         )}
       </div>
     </div>

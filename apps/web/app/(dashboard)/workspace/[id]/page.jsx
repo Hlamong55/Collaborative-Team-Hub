@@ -169,6 +169,7 @@ export default function WorkspacePage() {
 
               <input
                 value={goalTitle}
+                disabled={myRole !== "ADMIN"}
                 onChange={(e) => setGoalTitle(e.target.value)}
                 placeholder="New goal..."
                 className="px-3 py-3 bg-white/10 rounded-lg w-full"
@@ -176,7 +177,8 @@ export default function WorkspacePage() {
 
               <button
                 onClick={handleCreateGoal}
-                className="bg-purple-600 px-4 rounded-lg disabled:opacity-50 hover:bg-purple-700 hover:scale-105 transition"
+                disabled={myRole !== "ADMIN"}
+                className="bg-purple-600 px-4 rounded-lg disabled:opacity-40 disabled:cursor-not-allowed hover:bg-purple-700 hover:scale-105 transition"
               >
                 Create
               </button>
