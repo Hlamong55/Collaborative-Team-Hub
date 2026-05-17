@@ -192,6 +192,7 @@ export default function WorkspacePage() {
                 <GoalCard
                   key={g.id}
                   goal={g}
+                  myRole={myRole}
                   onUpdate={(goalId, updated) => {
                     setGoals(
                       goals.map((x) =>
@@ -220,6 +221,7 @@ export default function WorkspacePage() {
 
               <input
                 value={taskTitle}
+                disabled={myRole !== "ADMIN"}
                 onChange={(e) => setTaskTitle(e.target.value)}
                 placeholder="New task..."
                 className="flex-1 px-3 py-2 bg-white/10 rounded-lg"
@@ -228,6 +230,7 @@ export default function WorkspacePage() {
               {/* GOAL SELECT */}
               <select
                 value={taskGoalId}
+                disabled={myRole !== "ADMIN"}
                 onChange={(e) => setTaskGoalId(e.target.value)}
                 className="p-2 bg-slate-800 rounded-lg"
               >
@@ -248,6 +251,7 @@ export default function WorkspacePage() {
               {/* ✅ PRIORITY SELECT */}
               <select
                 value={taskPriority}
+                disabled={myRole !== "ADMIN"}
                 onChange={(e) =>
                   setTaskPriority(e.target.value)
                 }
@@ -268,6 +272,7 @@ export default function WorkspacePage() {
 
               <button
                 onClick={handleAddTask}
+                disabled={myRole !== "ADMIN"}
                 className="bg-purple-600 px-4 rounded-lg disabled:opacity-50 hover:bg-purple-700 hover:scale-105 transition"
               >
                 Create

@@ -3,14 +3,14 @@
 import { useState } from "react";
 import { createMilestone, updateMilestone } from "../../../../../lib/api";
 
-export default function GoalCard({ goal, onUpdate }) {
+export default function GoalCard({ goal, onUpdate, myRole }) {
+
   const [title, setTitle] = useState("");
-
   const milestones = goal.milestones || [];
-
   const done = milestones.filter((m) => m.status === "DONE").length;
   const total = milestones.length;
   const progress = total === 0 ? 0 : Math.round((done / total) * 100);
+
 
   const handleAdd = async () => {
     if (!title.trim()) return;
@@ -24,6 +24,7 @@ export default function GoalCard({ goal, onUpdate }) {
     setTitle("");
   };
 
+
   const toggle = async (m) => {
     const newStatus = m.status === "TODO" ? "DONE" : "TODO";
 
@@ -35,6 +36,7 @@ export default function GoalCard({ goal, onUpdate }) {
 
     onUpdate(goal.id, { milestones: updated });
   };
+
 
   return (
     <div className="bg-white/5 p-3 rounded-xl border border-white/10 space-y-5">
@@ -65,12 +67,14 @@ export default function GoalCard({ goal, onUpdate }) {
       <div className="flex gap-2.5">
         <input
           value={title}
+          disabled={myRole !== "ADMIN"}
           onChange={(e) => setTitle(e.target.value)}
           placeholder="Add milestone..."
           className="flex-1 px-2 py-2.5 bg-white/10 rounded text-sm outline-none"
         />
         <button
           onClick={handleAdd}
+          disabled={myRole !== "ADMIN"}
           className="text-xs bg-purple-600 px-3.5 rounded hover:bg-purple-700 hover:scale-105 transition"
         >
           +Add
@@ -82,7 +86,11 @@ export default function GoalCard({ goal, onUpdate }) {
         {milestones.map((m) => (
           <div
             key={m.id}
-            onClick={() => toggle(m)}
+            onClick={() =>{
+              if (myRole === "ADMIN") {
+                toggle(m)
+              }
+            }}
             className="flex justify-between items-center text-sm bg-white/5 px-3 py-2 rounded cursor-pointer hover:border-purple-500 border border-gray-600 transition"
           >
             <p

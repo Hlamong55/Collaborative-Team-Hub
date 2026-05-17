@@ -13,13 +13,9 @@ import { useWorkspaceStore } from "../../../../../lib/store";
 
 export default function GoalsPage() {
   const { currentWorkspace } = useWorkspaceStore();
-
   const [goals, setGoals] = useState([]);
-
   const [goalTitle, setGoalTitle] = useState("");
-
   const [dueDate, setDueDate] = useState("");
-
   const [milestoneInputs, setMilestoneInputs] = useState({});
 
   /* ================= LOAD ================= */
@@ -302,11 +298,7 @@ export default function GoalsPage() {
                         {/* TITLE */}
 
                         <p
-                          className={
-                            m.status === "DONE"
-                              ? "text-gray-500"
-                              : ""
-                          }
+                          className={m.status === "DONE" ? "text-gray-500" : ""}
                         >
                           {m.title}
                         </p>
@@ -336,7 +328,9 @@ export default function GoalsPage() {
                   {/* EMPTY */}
 
                   {g.milestones?.length === 0 && (
-                    <p className="text-sm text-gray-400 italic">No milestones yet</p>
+                    <p className="text-sm text-gray-400 italic">
+                      No milestones yet
+                    </p>
                   )}
                 </div>
 
